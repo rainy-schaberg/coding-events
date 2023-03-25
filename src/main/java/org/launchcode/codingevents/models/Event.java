@@ -9,19 +9,29 @@ public class Event {
 
     private int id;
     private static int nextId = 1;
-    @NotBlank
-    @Size (min = 3, max = 50, message = "Name must be within 3-50 characters.")
+
+    @NotBlank(message = "Name is required")
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String name;
-    @Size(max = 500, message="Description too long.")
+
+    @Size(max = 500, message = "Description too long!")
     private String description;
-    @NotBlank
-    @Email(message = "Invalid email, try again!")
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email. Try again.")
     private String contactEmail;
 
+    private EventType type;
 
-    public Event(String name, String description) {
+    public Event(String name, String description, String contactEmail, EventType type) {
+        this();
         this.name = name;
         this.description = description;
+        this.contactEmail = contactEmail;
+        this.type = type;
+    }
+
+    public Event() {
         this.id = nextId;
         nextId++;
     }
@@ -50,9 +60,18 @@ public class Event {
         this.contactEmail = contactEmail;
     }
 
+    public EventType getType() {
+        return type;
+    }
+
+    public void setType(EventType type) {
+        this.type = type;
+    }
+
     public int getId() {
         return id;
     }
+
     @Override
     public String toString() {
         return name;
@@ -61,13 +80,13 @@ public class Event {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Event)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return getId() == event.getId();
+        return id == event.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId());
+        return Objects.hash(id);
     }
 }
